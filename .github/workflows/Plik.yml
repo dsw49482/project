@@ -1,0 +1,39 @@
+name: Plik .exe
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * 0"  # Codziennie o północy w niedzielę
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install -r requirements.txt  # Instaluje zależności projektu
+          .\installResources.ps1
+
+      - name: Build executable
+        run: pyinstaller --onefile program.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: program-exe
+          path: dist/program.exe
+
+      - name: Run program
+        run: dist/program.exe data/input.txt data/output.txt
