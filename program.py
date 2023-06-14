@@ -50,6 +50,17 @@ def save_xml(file_path, root):
         tree.write(file, encoding='utf-8', xml_declaration=True)
 
 
+def read_text_file(file_path):
+    with open(file_path, 'r') as file:
+        text = file.read()
+    return text
+
+
+def save_text_file(file_path, text):
+    with open(file_path, 'w') as file:
+        file.write(text)
+
+
 def convert_data(input_file_path, output_file_path):
     file_extension = input_file_path.split('.')[-1].lower()
 
@@ -66,8 +77,9 @@ def convert_data(input_file_path, output_file_path):
         if root is not None:
             save_xml(output_file_path, root)
     else:
-        print(f"Unsupported file format: {file_extension}")
-        return
+        # Treat as plain text file
+        text = read_text_file(input_file_path)
+        save_text_file(output_file_path, text)
 
     print(f"Data converted successfully. Saved to {output_file_path}")
 
