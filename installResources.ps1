@@ -1,5 +1,5 @@
 'pip install json'
-'pip install pyyaml'
+'pip install yaml'
 'pip install xml'
 'pip install pyinstaller'
 'pip installrequirements.txt'
