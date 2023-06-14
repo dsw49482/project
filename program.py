@@ -1,5 +1,7 @@
 import sys
 import json
+from os import name
+
 import yaml
 import xml.etree.ElementTree as ET
 
@@ -36,7 +38,7 @@ def save_xml(file_path, root):
     tree = ET.ElementTree(root)
     with open(file_path, 'wb') as file:
         tree.write(file, encoding='utf-8', xml_declaration=True)
- 
+
 
 def convert_data(input_file_path, output_file_path):
     file_extension = input_file_path.split('.')[-1].lower()
