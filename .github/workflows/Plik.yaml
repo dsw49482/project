@@ -35,5 +35,5 @@ jobs:
           path: dist/program.exe
 
       - name: Run program
-        run: .\dist\program.exe data\input.json data\output.yaml
+        run: .\dist\program.exe data\input.txt data\output.txt
 
