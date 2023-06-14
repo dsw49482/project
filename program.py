@@ -8,7 +8,7 @@ def parse_json(file_path):
     try:
         with open(file_path, 'r') as file:
             json_str = file.read()
-            if not json_str:
+            if not json_str.strip():
                 print("Error: File is empty:", file_path)
                 return None
             data = json.loads(json_str)
@@ -17,6 +17,9 @@ def parse_json(file_path):
         print("Error: File not found:", file_path)
         return None
     except json.JSONDecodeError as e:
+        print("Error parsing JSON file:", str(e))
+        return None
+    except Exception as e:
         print("Error parsing JSON file:", str(e))
         return None
 
@@ -37,6 +40,9 @@ def parse_yaml(file_path):
     except yaml.YAMLError as e:
         print("Error parsing YAML file:", str(e))
         return None
+    except Exception as e:
+        print("Error parsing YAML file:", str(e))
+        return None
 
 
 def save_yaml(file_path, data):
@@ -55,6 +61,9 @@ def parse_xml(file_path):
     except ET.ParseError as e:
         print("Error parsing XML file:", str(e))
         return None
+    except Exception as e:
+        print("Error parsing XML file:", str(e))
+        return None
 
 
 def save_xml(file_path, root):
@@ -63,6 +72,8 @@ def save_xml(file_path, root):
         tree.write(file_path, encoding='utf-8', xml_declaration=True)
     except FileNotFoundError:
         print("Error: File not found:", file_path)
+    except Exception as e:
+        print("Error saving XML file:", str(e))
 
 
 def convert_data(input_file_path, output_file_path):
