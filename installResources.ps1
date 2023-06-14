@@ -2,3 +2,4 @@
 'pip install pyyaml'
 'pip install xml'
 'pip install pyinstaller'
+'pip installrequirements.txt'
