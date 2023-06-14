@@ -1,6 +1,6 @@
 import argparse
 import json
-import yaml
+import yaml 
 import xml.etree.ElementTree as ET
 
 def parse_arguments():
