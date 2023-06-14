@@ -24,6 +24,7 @@ def parse_json(file_path):
         return None
 
 
+
 def save_json(file_path, data):
     try:
         with open(file_path, 'w') as file:
@@ -85,10 +86,16 @@ def save_xml(file_path, root):
 def convert_data(input_file_path, output_file_path):
     file_extension = input_file_path.split('.')[-1].lower()
 
-    if file_extension == 'json':
-        data = parse_json(input_file_path)
-        if data is not None:
-            save_json(output_file_path, data)
+    if file_extension != 'json':
+        print(f"Unsupported file format: {file_extension}")
+        return
+
+    data = parse_json(input_file_path)
+    if data is not None:
+        save_json(output_file_path, data)
+
+    print(f"Data converted successfully. Saved to {output_file_path}")
+
     elif file_extension in ['yml', 'yaml']:
         data = parse_yaml(input_file_path)
         if data is not None:
