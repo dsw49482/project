@@ -1,82 +1,78 @@
 import argparse
 import json
-import yaml
 import xml.etree.ElementTree as ET
+import yaml
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Program do konwersji danych')
-    parser.add_argument('input_file', help='Ścieżka pliku wejściowego')
-    parser.add_argument('output_file', help='Ścieżka pliku wyjściowego')
+    parser = argparse.ArgumentParser(description='Program do konwersji danych obsługujący formaty: .xml, .json i .yml (.yaml)')
+    parser.add_argument('input_file', help='Ścieżka do pliku wejściowego')
+    parser.add_argument('output_file', help='Ścieżka do pliku wyjściowego')
     return parser.parse_args()
 
-def load_json(input_file_path):
-    try:
-        with open(input_file_path, 'r') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        print(f'Plik {input_file_path} nie został odnaleziony.')
+def read_json(input_file):
+    with open(input_file, 'r') as file:
+        data = json.load(file)
+    return data
 
-def save_json(data, output_file_path):
-    try:
-        with open(output_file_path, 'w') as file:
-            json.dump(data, file, indent=4)
-            print(f'Dane zostały zapisane do pliku {output_file_path}.')
-    except FileNotFoundError:
-        print(f'Nie można zapisać danych do pliku {output_file_path}.')
+def write_json(output_file, data):
+    with open(output_file, 'w') as file:
+        json.dump(data, file, indent=4)
 
-def load_yaml(input_file_path):
-    try:
-        with open(input_file_path, 'r') as file:
-            return yaml.safe_load(file)
-    except FileNotFoundError:
-        print(f'Plik {input_file_path} nie został odnaleziony.')
+def read_yaml(input_file):
+    with open(input_file, 'r') as file:
+        data = yaml.safe_load(file)
+    return data
 
-def save_yaml(data, output_file_path):
-    try:
-        with open(output_file_path, 'w') as file:
-            yaml.dump(data, file)
-            print(f'Dane zostały zapisane do pliku {output_file_path}.')
-    except FileNotFoundError:
-        print(f'Nie można zapisać danych do pliku {output_file_path}.')
+def write_yaml(output_file, data):
+    with open(output_file, 'w') as file:
+        yaml.dump(data, file, default_flow_style=False)
 
-def load_xml(input_file_path):
-    try:
-        tree = ET.parse(input_file_path)
-        return tree.getroot()
-    except FileNotFoundError:
-        print(f'Plik {input_file_path} nie został odnaleziony.')
+def read_xml(input_file):
+    tree = ET.parse(input_file)
+    root = tree.getroot()
+    return root
 
-def save_xml(root, output_file_path):
-    try:
-        tree = ET.ElementTree(root)
-        tree.write(output_file_path)
-        print(f'Dane zostały zapisane do pliku {output_file_path}.')
-    except FileNotFoundError:
-        print(f'Nie można zapisać danych do pliku {output_file_path}.')
+def write_xml(output_file, root):
+    tree = ET.ElementTree(root)
+    tree.write(output_file, encoding='utf-8', xml_declaration=True)
 
 def main():
     args = parse_arguments()
 
-    # Rozpoznawanie formatu pliku wejściowego
-    if args.input_file.endswith('.json'):
-        data = load_json(args.input_file)
-    elif args.input_file.endswith(('.yml', '.yaml')):
-        data = load_yaml(args.input_file)
-    elif args.input_file.endswith('.xml'):
-        root = load_xml(args.input_file)
+    # Rozpoznawanie formatu pliku na podstawie rozszerzenia
+    input_format = args.input_file.split('.')[-1].lower()
+    output_format = args.output_file.split('.')[-1].lower()
+
+    if input_format == 'json':
+        data = read_json(args.input_file)
+    elif input_format == 'yaml' or input_format == 'yml':
+        data = read_yaml(args.input_file)
+    elif input_format == 'xml':
+        root = read_xml(args.input_file)
     else:
-        print('Nieobsługiwany format pliku wejściowego.')
+        print(f'Nieobsługiwany format pliku wejściowego: {input_format}')
         return
 
-    # Konwersja i zapis danych do pliku wyjściowego
-    if args.output_file.endswith('.json'):
-        save_json(data, args.output_file)
-    elif args.output_file.endswith(('.yml', '.yaml')):
-        save_yaml(data, args.output_file)
-    elif args.output_file.endswith('.xml'):
-        save_xml(root, args.output_file)
+    if output_format == 'json':
+        if input_format == 'xml':
+            # Konwersja danych z XML do JSON
+            data = {}  # Zaimplementuj konwersję danych z obiektu XML na słownik JSON
+        write_json(args.output_file, data)
+    elif output_format == 'yaml' or output_format == 'yml':
+        if input_format == 'xml':
+            # Konwersja danych z XML do YAML
+            data = {}  # Zaimplementuj konwersję danych z obiektu XML na słownik YAML
+        write_yaml(args.output_file, data)
+    elif output_format == 'xml':
+        if input_format == 'json':
+            # Konwersja danych z JSON do XML
+            root = ET.Element('root')  # Zaimplementuj konwersję danych z obiektu JSON na obiekt XML
+        elif input_format == 'yaml' or input_format == 'yml':
+            # Konwersja danych z YAML do XML
+            root = ET.Element('root')  # Zaimplementuj konwersję danych z obiektu YAML na obiekt XML
+        write_xml(args.output_file, root)
     else:
-        print('Nieobsługiwany format pliku wyjściowego.')
+        print(f'Nieobsługiwany format pliku wyjściowego: {output_format}')
 
 if __name__ == '__main__':
     main()
