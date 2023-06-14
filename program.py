@@ -25,8 +25,11 @@ def parse_json(file_path):
 
 
 def save_json(file_path, data):
-    with open(file_path, 'w') as file:
-        json.dump(data, file, indent=4)
+    try:
+        with open(file_path, 'w') as file:
+            json.dump(data, file, indent=4)
+    except Exception as e:
+        print(f"Error saving JSON file: {str(e)}")
 
 
 def parse_yaml(file_path):
@@ -46,8 +49,11 @@ def parse_yaml(file_path):
 
 
 def save_yaml(file_path, data):
-    with open(file_path, 'w') as file:
-        yaml.dump(data, file, default_flow_style=False)
+    try:
+        with open(file_path, 'w') as file:
+            yaml.dump(data, file, default_flow_style=False)
+    except Exception as e:
+        print(f"Error saving YAML file: {str(e)}")
 
 
 def parse_xml(file_path):
@@ -67,8 +73,8 @@ def parse_xml(file_path):
 
 
 def save_xml(file_path, root):
-    tree = ET.ElementTree(root)
     try:
+        tree = ET.ElementTree(root)
         tree.write(file_path, encoding='utf-8', xml_declaration=True)
     except FileNotFoundError:
         print(f"Error: File not found: {file_path}")
