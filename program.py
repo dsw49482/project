@@ -17,12 +17,11 @@ def parse_json(file_path):
         print(f"Error: File not found: {file_path}")
         return None
     except json.JSONDecodeError as e:
-        print(f"Error parsing JSON file: {str(e)}")
+        print(f"Error parsing JSON file: {str(e)}\nJSON String: {json_str}")
         return None
     except Exception as e:
         print(f"Error parsing JSON file: {str(e)}")
         return None
-
 
 
 def save_json(file_path, data):
@@ -95,7 +94,6 @@ def convert_data(input_file_path, output_file_path):
         save_json(output_file_path, data)
 
     print(f"Data converted successfully. Saved to {output_file_path}")
-
 
 
 if __name__ == '__main__':
