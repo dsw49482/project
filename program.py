@@ -59,7 +59,7 @@ def convert_data(input_file_path, output_file_path):
     print(f"Data converted successfully. Saved to {output_file_path}")
 
 
-if name == 'main':
+if __name__ == '__main__':
     if len(sys.argv) < 3:
         print("Usage: program.py input_file output_file")
     else:
