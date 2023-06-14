@@ -81,7 +81,7 @@ def convert_data(input_file_path, output_file_path):
         if root is not None:
             save_xml(output_file_path, root)
     else:
-        
+        # Treat as plain text file
         text = read_text_file(input_file_path)
         if text is not None:
             save_text_file(output_file_path, text)
