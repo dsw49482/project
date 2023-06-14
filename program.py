@@ -7,7 +7,11 @@ import xml.etree.ElementTree as ET
 def parse_json(file_path):
     try:
         with open(file_path, 'r') as file:
-            data = json.load(file)
+            json_str = file.read()
+            if not json_str:
+                print("Error: File is empty:", file_path)
+                return None
+            data = json.loads(json_str)
         return data
     except FileNotFoundError:
         print("Error: File not found:", file_path)
