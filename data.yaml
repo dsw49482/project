@@ -1,0 +1,1 @@
+run: dist/program.exe input_data/input.txt input_data/output.txt
