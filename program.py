@@ -6,7 +6,11 @@ import xml.etree.ElementTree as ET
 
 def parse_json(file_path):
     with open(file_path, 'r') as file:
-        data = json.load(file)
+        try:
+            data = json.load(file)
+        except json.JSONDecodeError as e:
+            print("Error parsing JSON file:", str(e))
+            return None
     return data
 
 
@@ -17,7 +21,11 @@ def save_json(file_path, data):
 
 def parse_yaml(file_path):
     with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+        try:
+            data = yaml.safe_load(file)
+        except yaml.YAMLError as e:
+            print("Error parsing YAML file:", str(e))
+            return None
     return data
 
 
@@ -27,9 +35,13 @@ def save_yaml(file_path, data):
 
 
 def parse_xml(file_path):
-    tree = ET.parse(file_path)
-    root = tree.getroot()
-    return root
+    try:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        return root
+    except ET.ParseError as e:
+        print("Error parsing XML file:", str(e))
+        return None
 
 
 def save_xml(file_path, root):
@@ -43,13 +55,16 @@ def convert_data(input_file_path, output_file_path):
 
     if file_extension == 'json':
         data = parse_json(input_file_path)
-        save_json(output_file_path, data)
+        if data is not None:
+            save_json(output_file_path, data)
     elif file_extension in ['yml', 'yaml']:
         data = parse_yaml(input_file_path)
-        save_yaml(output_file_path, data)
+        if data is not None:
+            save_yaml(output_file_path, data)
     elif file_extension == 'xml':
         root = parse_xml(input_file_path)
-        save_xml(output_file_path, root)
+        if root is not None:
+            save_xml(output_file_path, root)
     else:
         print(f"Unsupported file format: {file_extension}")
         return
