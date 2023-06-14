@@ -1,7 +1,5 @@
 import sys
 import json
-from os import name
-
 import yaml
 import xml.etree.ElementTree as ET
 
