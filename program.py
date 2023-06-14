@@ -9,18 +9,18 @@ def parse_json(file_path):
         with open(file_path, 'r') as file:
             json_str = file.read()
             if not json_str.strip():
-                print("Error: File is empty:", file_path)
+                print(f"Error: File is empty: {file_path}")
                 return None
             data = json.loads(json_str)
         return data
     except FileNotFoundError:
-        print("Error: File not found:", file_path)
+        print(f"Error: File not found: {file_path}")
         return None
     except json.JSONDecodeError as e:
-        print("Error parsing JSON file:", str(e))
+        print(f"Error parsing JSON file: {str(e)}")
         return None
     except Exception as e:
-        print("Error parsing JSON file:", str(e))
+        print(f"Error parsing JSON file: {str(e)}")
         return None
 
 
@@ -35,13 +35,13 @@ def parse_yaml(file_path):
             data = yaml.safe_load(file)
         return data
     except FileNotFoundError:
-        print("Error: File not found:", file_path)
+        print(f"Error: File not found: {file_path}")
         return None
     except yaml.YAMLError as e:
-        print("Error parsing YAML file:", str(e))
+        print(f"Error parsing YAML file: {str(e)}")
         return None
     except Exception as e:
-        print("Error parsing YAML file:", str(e))
+        print(f"Error parsing YAML file: {str(e)}")
         return None
 
 
@@ -56,13 +56,13 @@ def parse_xml(file_path):
         root = tree.getroot()
         return root
     except FileNotFoundError:
-        print("Error: File not found:", file_path)
+        print(f"Error: File not found: {file_path}")
         return None
     except ET.ParseError as e:
-        print("Error parsing XML file:", str(e))
+        print(f"Error parsing XML file: {str(e)}")
         return None
     except Exception as e:
-        print("Error parsing XML file:", str(e))
+        print(f"Error parsing XML file: {str(e)}")
         return None
 
 
@@ -71,9 +71,9 @@ def save_xml(file_path, root):
     try:
         tree.write(file_path, encoding='utf-8', xml_declaration=True)
     except FileNotFoundError:
-        print("Error: File not found:", file_path)
+        print(f"Error: File not found: {file_path}")
     except Exception as e:
-        print("Error saving XML file:", str(e))
+        print(f"Error saving XML file: {str(e)}")
 
 
 def convert_data(input_file_path, output_file_path):
