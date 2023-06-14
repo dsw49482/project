@@ -96,19 +96,6 @@ def convert_data(input_file_path, output_file_path):
 
     print(f"Data converted successfully. Saved to {output_file_path}")
 
-    elif file_extension in ['yml', 'yaml']:
-        data = parse_yaml(input_file_path)
-        if data is not None:
-            save_yaml(output_file_path, data)
-    elif file_extension == 'xml':
-        root = parse_xml(input_file_path)
-        if root is not None:
-            save_xml(output_file_path, root)
-    else:
-        print(f"Unsupported file format: {file_extension}")
-        return
-
-    print(f"Data converted successfully. Saved to {output_file_path}")
 
 
 if __name__ == '__main__':
