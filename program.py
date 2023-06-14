@@ -51,9 +51,13 @@ def save_xml(file_path, root):
 
 
 def read_text_file(file_path):
-    with open(file_path, 'r') as file:
-        text = file.read()
-    return text
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        return text
+    except FileNotFoundError:
+        print("Error: File not found:", file_path)
+        return None
 
 
 def save_text_file(file_path, text):
@@ -77,9 +81,10 @@ def convert_data(input_file_path, output_file_path):
         if root is not None:
             save_xml(output_file_path, root)
     else:
-        # Treat as plain text file
+        
         text = read_text_file(input_file_path)
-        save_text_file(output_file_path, text)
+        if text is not None:
+            save_text_file(output_file_path, text)
 
     print(f"Data converted successfully. Saved to {output_file_path}")
 
